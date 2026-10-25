@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title or "Brain Stroke Assistant" }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div
+    class="bg-image"
+    aria-hidden="true"
+    style="background-image: url('{{ url_for('background_image') }}');"
+  ></div>
+
+  <div class="bg-shape shape-a" aria-hidden="true"></div>
+  <div class="bg-shape shape-b" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <h1>NeuroScan Console</h1>
+    {% if session.get('doctor_id') %}
+      <nav class="topnav">
+        <span class="user-badge">Logged in as: Dr. {{ session.get('doctor_username') }}</span>
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('patients') }}">Patients</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+      </nav>
+    {% endif %}
+  </header>
+
+  <main class="page">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, msg in messages %}
+          <div class="flash {{ category }}">{{ msg }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

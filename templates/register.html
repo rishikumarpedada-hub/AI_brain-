@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="card narrow">
+  <h2>Doctor Registration</h2>
+  <p class="muted">Create a new doctor account.</p>
+  <form method="post" class="form-grid">
+    <label>Username
+      <input type="text" name="username" minlength="3" required>
+    </label>
+    <label>Password
+      <input type="password" name="password" minlength="8" required>
+    </label>
+    <label>Confirm Password
+      <input type="password" name="confirm_password" minlength="8" required>
+    </label>
+    <button type="submit">Create Account</button>
+  </form>
+  <p class="hint">Already registered? <a href="{{ url_for('login') }}">Back to login</a></p>
+</section>
+{% endblock %}

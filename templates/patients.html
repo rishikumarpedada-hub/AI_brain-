@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="card">
+  <h2>Patient Records</h2>
+  {% if records %}
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Gender</th>
+            <th>Prediction</th>
+            <th>Confidence</th>
+            <th>Open</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in records %}
+          <tr>
+            <td>{{ item.id }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.age }}</td>
+            <td>{{ item.gender }}</td>
+            <td><span class="pill {{ 'normal' if item.prediction == 'Non-Stroke' else 'stroke' }}">{{ item.prediction }}</span></td>
+            <td>
+              {% if item.confidence is not none %}
+                {{ '%.1f'|format(item.confidence * 100) }}%
+              {% else %}
+                NA
+              {% endif %}
+            </td>
+            <td><a href="{{ url_for('patient_detail', patient_id=item.id) }}">View</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p class="muted">No patient data saved yet.</p>
+  {% endif %}
+</section>
+{% endblock %}

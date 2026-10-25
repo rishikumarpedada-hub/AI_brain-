@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="card">
+  <h2>Patient #{{ patient.id }}</h2>
+  <div class="detail-grid">
+    <div><strong>Name:</strong> {{ patient.name }}</div>
+    <div><strong>Age:</strong> {{ patient.age }}</div>
+    <div><strong>Gender:</strong> {{ patient.gender }}</div>
+    <div><strong>Prediction:</strong> {{ patient.prediction }}</div>
+    <div><strong>Confidence:</strong>
+      {% if patient.confidence is not none %}
+        {{ '%.1f'|format(patient.confidence * 100) }}%
+      {% else %}
+        NA
+      {% endif %}
+    </div>
+  </div>
+
+  <h3>Clinical Notes</h3>
+  <p class="notes">{{ patient.notes or "No notes added." }}</p>
+
+  <h3>Segmentation Overlay</h3>
+  <img class="overlay" src="{{ url_for('generated', filename=patient.overlay_filename) }}" alt="Brain segmentation overlay">
+
+  {% if patient.highlight_filename %}
+  <h3>Highlighted Regions</h3>
+  <img class="overlay" src="{{ url_for('generated', filename=patient.highlight_filename) }}" alt="Highlighted lesion regions">
+  {% endif %}
+
+  <h3>Result Basis</h3>
+  <div class="detail-grid">
+    <div><strong>Lesion Area Ratio:</strong>
+      {% if patient.lesion_ratio is not none %}{{ '%.2f'|format(patient.lesion_ratio * 100) }}%{% else %}NA{% endif %}
+    </div>
+    <div><strong>Lesion Pixels:</strong>
+      {% if patient.lesion_pixels is not none and patient.total_pixels is not none %}
+        {{ patient.lesion_pixels }} / {{ patient.total_pixels }}
+      {% else %}
+        NA
+      {% endif %}
+    </div>
+    <div><strong>Mask Mean:</strong>
+      {% if patient.feature_mean is not none %}{{ '%.4f'|format(patient.feature_mean) }}{% else %}NA{% endif %}
+    </div>
+    <div><strong>Mask Std Dev:</strong>
+      {% if patient.feature_std is not none %}{{ '%.4f'|format(patient.feature_std) }}{% else %}NA{% endif %}
+    </div>
+    <div><strong>Detected Regions:</strong>
+      {% if patient.region_count is not none %}{{ patient.region_count }}{% else %}NA{% endif %}
+    </div>
+    <div><strong>Largest Region Ratio:</strong>
+      {% if patient.largest_region_ratio is not none %}{{ '%.2f'|format(patient.largest_region_ratio * 100) }}%{% else %}NA{% endif %}
+    </div>
+  </div>
+  <p class="hint">
+    Prediction is based on DBIM segmentation features (histogram + mean/std) from this uploaded image.
+  </p>
+</section>
+{% endblock %}

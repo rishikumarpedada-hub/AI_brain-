@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="card narrow">
+  <h2>Doctor Login</h2>
+  <p class="muted">Secure access for clinical prediction workflow.</p>
+  <form method="post" class="form-grid">
+    <label>Username
+      <input type="text" name="username" required>
+    </label>
+    <label>Password
+      <input type="password" name="password" required>
+    </label>
+    <button type="submit">Sign In</button>
+  </form>
+  <p class="hint">Default first-run login: doctor / changeme123 (change via env vars).</p>
+  <p class="hint">New doctor? <a href="{{ url_for('register_doctor') }}">Create account at /newdata</a></p>
+</section>
+{% endblock %}
